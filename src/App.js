@@ -75,6 +75,13 @@ function ChatRoom() {
 
   const [formValue, setFormValue] = useState('');
 
+  const helpText = 
+  'Here are the possibilities within this app:\
+   Send\'food -h\' for a zesty food recommendation\
+   Send\'books -h\' for a thrilling book rec\
+   Send\'mixtape -h\' for a fire basketball mixtape rec\
+   ';
+
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -88,9 +95,29 @@ function ChatRoom() {
       photoURL
     })
 
+    if(formValue === 'help'){
+      await messagesRef.add({
+        text: helpText,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid,
+        photoURL
+      })
+    }
+    if(formValue === 'food -h'){
+      window.open("https://www.buzzfeed.com/rachelysanders/19-easy-recipes-to-make-with-stuff-you-already-hav", '_blank');
+    }
+    if(formValue === 'books -h'){
+      window.open("https://www.lifehack.org/articles/communication/30-books-that-everyone-should-read-least-once-their-lives.html", '_blank');
+    }
+    if(formValue === 'mixtape -h'){
+      window.open(" https://www.youtube.com/watch?v=mpyMvHeQZlQ", '_blank');
+    }
+   
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
+
+  
 
   return (<>
     <main>
@@ -103,7 +130,7 @@ function ChatRoom() {
 
     <form onSubmit={sendMessage}>
 
-      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Enter your message" />
+      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Enter your message. Send 'help' for a list of options." />
 
       <button type="submit" disabled={!formValue}>🕊️</button>
 
